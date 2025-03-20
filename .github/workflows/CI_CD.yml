@@ -43,6 +43,6 @@ jobs:
 
       - name: Generate Image Docker
         run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin 
+          docker login ghcr.io -u ${{ github.actor }} --password-stdin 
           docker build -t ${{env.GITHUB_CONTAINER_REGISTRY}}/${{ env.CONTAINER_APP_NAME }}:latest -f ./Sigelo.WebApi/Dockerfile .
           docker push ${{env.GITHUB_CONTAINER_REGISTRY}}/${{ env.CONTAINER_APP_NAME }}:latest
