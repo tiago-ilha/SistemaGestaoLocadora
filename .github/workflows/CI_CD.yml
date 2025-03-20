@@ -46,8 +46,9 @@ jobs:
     steps:
       - run: echo "Publicando Homologação"
 
-  # Producao:
-  #   runs-on: ubuntu-latest
-  #   needs: [Homologacao]
-  #   steps:
-  #     - run: "Publicando Produção"
+  Producao:
+    runs-on: ubuntu-latest
+    needs: [Homologacao]
+    if: success() && github.event_name == 'workflow_dispatch'
+    steps:
+      - run: "Publicando Produção"
