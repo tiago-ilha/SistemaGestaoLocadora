@@ -41,6 +41,7 @@ jobs:
           docker push ${{env.GITHUB_CONTAINER_REGISTRY}}:latest
 
   Homologacao:
+    if: success()
     runs-on: ubuntu-latest
     needs: [Release]
     steps:
@@ -52,6 +53,5 @@ jobs:
     environment:
       name: Production
       url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-    if: success()
     steps:
       - run: echo "Publicando Produção"
