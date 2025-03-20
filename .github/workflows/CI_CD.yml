@@ -37,9 +37,12 @@ jobs:
       - name: Publish Artifact
         run: dotnet publish -c Release -o ./publish
 
+      # - name: Login no GitHub Container Registry
+      #   run: |
+      #     echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Generate Image Docker
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}"  
-          docker login ghcr.io -u ${{ github.actor }} --password-stdin 
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin 
           docker build -t ${{env.GITHUB_CONTAINER_REGISTRY}}/${{ env.CONTAINER_APP_NAME }}:latest ./Sigelo.WebApi 
           docker push ${{env.GITHUB_CONTAINER_REGISTRY}}/${{ env.CONTAINER_APP_NAME }}:latest
