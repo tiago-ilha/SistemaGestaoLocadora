@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [Release]
     steps:
-      - run: "Publicando Homologação"
+      - run: echo "Publicando Homologação"
 
   # Producao:
   #   runs-on: ubuntu-latest
