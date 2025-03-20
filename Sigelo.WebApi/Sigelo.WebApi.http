@@ -1,0 +1,6 @@
+@Sigelo.WebApi_HostAddress = http://localhost:5063
+
+GET {{Sigelo.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
