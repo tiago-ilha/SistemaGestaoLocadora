@@ -54,4 +54,4 @@ jobs:
       url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
     if: success()
     steps:
-      - run: "Publicando Produção"
+      - run: echo "Publicando Produção"
