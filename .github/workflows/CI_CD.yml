@@ -4,33 +4,42 @@ name: .NET
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
-  
-#env:  
+
+env:
+  GITHUB_CONTAINER_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  CONTAINER_APP_NAME: api-sigelo
 
 jobs:
   Release:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x        
-        
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-      
-    #- name: Test
-    #  run: dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v4
 
-    #- name: Publish Artifact
-    #  run: dotnet publish -c Release -o webApp 
+      - name: Pre-build
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      #- name: Test
+      #  run: dotnet test --no-build --verbosity normal
+
+      - name: Publish Artifact
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Generate Image Docker
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | 
+          docker login ghcr.io -u ${{ github.actor }} --password-stdin |
+          docker build -t ${{env.GITHUB_CONTAINER_REGISTRY}}/${{ env.CONTAINER_APP_NAME }}:latest . |
+          docker push ${{env.GITHUB_CONTAINER_REGISTRY}}/${{ env.CONTAINER_APP_NAME }}:latest
