@@ -39,3 +39,15 @@ jobs:
           docker build -t ${{env.GITHUB_CONTAINER_REGISTRY}}:latest -f ./Sigelo.WebApi/Dockerfile .
           docker tag ${{env.GITHUB_CONTAINER_REGISTRY}}:latest ${{env.GITHUB_CONTAINER_REGISTRY}}:1.0.0
           docker push ${{env.GITHUB_CONTAINER_REGISTRY}}:latest
+
+  Homologacao:
+    runs-on: ubuntu-latest
+    needs: [Release]
+    steps:
+      - run: "Publicando Homologação"
+
+  # Producao:
+  #   runs-on: ubuntu-latest
+  #   needs: [Homologacao]
+  #   steps:
+  #     - run: "Publicando Produção"
